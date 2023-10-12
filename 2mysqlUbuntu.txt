@@ -1,0 +1,45 @@
+################ install llinux on ubuntu #########################
+1)docker run -ti -d -p 3307:3306 --name uc1 ubuntu:latest
+2)docker container exec -it uc1 /bin/bash
+3)apt update 
+4)apt list --upgradable
+5)apt upgrade -y
+6)apt install mysql-server -y
+7)systemctl start mysql.service  - if not work use 8,9
+8)service mysql start
+9)service mysql status
+10)service mysql restart
+
+10)mysql
+11)show databases;
+12)exit
+
+################### How to create mysql usr and give permission ########################
+1)CREATE USER 'pranav'@'localhost' IDENTIFIED BY 'pranav@123'; --not work use below
+CREATE USER 'golu'@'%' IDENTIFIED BY 'golu@123'; 
+2)GRANT ALL PRIVILEGES ON *.* TO 'pranav'@'localhost' WITH GRANT OPTION; --not work use below
+GRANT ALL PRIVILEGES ON *.* TO 'golu'@'%' WITH GRANT OPTION;
+3)FLUSH PRIVILEGES;
+4)exit
+
+##############open workbench make connection ###################
+
+
+
+################## allow mysqlserver to remote request ###########################
+apt install plocate -y
+plocate my.cnf
+plocate my.ini
+plocate mysqld.cnf
+
+cat /etc/mysql/mysql.conf.d/mysqld.cnf
+vim /etc/mysql/mysql.conf.d/mysqld.cnf
+apt install vim -y
+bind-address: 0.0.0.0
+
+
+########deploy on 38.242.236.173##########
+docker run -it -d -p 3308:3306 --name pranav_mysql_container1 pranavv481/image_mysql8
+docker exec -it pranav_mysql_container1 /bin/bash
+service mysql start
+service mysql status
