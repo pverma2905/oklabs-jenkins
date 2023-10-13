@@ -1,0 +1,75 @@
+1)docker run -it -d -p 1010:8080 --name uc1 ubuntu:latest 
+2)docker exec -it uc1 /bin/bash
+3)apt-get update -y
+4)apt-get upgrade -y
+5)apt-get install wget unzip fontconfig plocate vim -y
+
+
+##############check version of jira####################
+jira changelog: 9.10.1
+
+######################## install ubuntu ###############################
+
+1)wget https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-software-9.9.0-x64.bin
+
+ls
+ls -al
+
+################### give permision on user group other ####################
+2)chmod 777 atlassian-jira-software-9.9.0-x64.bin 
+
+3)./atlassian-jira-software-9.9.0-x64.bin
+
+o
+1
+i
+ya
+n
+
+##################### install and configure mysql ############################
+
+1)apt-get install mysql-server -y
+2)systemctl status mysql     --if not work use below
+service mysql status
+service mysql start 
+
+3)mysql
+
+4)CREATE DATABASE jira CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+  show databases;
+
+  CREATE USER 'golu'@'%' IDENTIFIED BY 'golu@123';
+
+5)GRANT ALL ON jira.* TO 'jira'@'localhost' WITH GRANT OPTION;  --- not work
+GRANT ALL PRIVILEGES ON *.* TO 'golu'@'%' WITH GRANT OPTION;
+
+6)FLUSH PRIVILEGES;
+
+7)EXIT;
+service mysql restart; 
+
+###################### configure jira ###################################
+
+1)wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-8.0.18.zip
+2)unzip mysql-connector-java-8.0.18.zip
+
+rm -f atlassian
+rm -f mysql.zip
+rm -f mysql.zip.1
+ls -al
+
+3)cp mysql-connector-java-8.0.18/mysql-connector-java-8.0.18.jar /opt/atlassian/jira/lib
+
+4)/etc/init.d/jira start
+
+5)/etc/init.d/jira stop
+
+
+
+###########################deploy#############################
+
+15)docker stop uclatest
+16)docker run -it -d -p 7070:8080 --name uclatest2 pranavv481/image_jira 
+17)docker exec -it uclatest2 /bin/bash
+
+17)/etc/init.d/jira start

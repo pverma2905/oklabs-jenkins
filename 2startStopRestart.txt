@@ -1,3 +1,9 @@
 sudo systemctl enable jenkins
 sudo systemctl start jenkins
 sudo systemctl status jenkins
+
+
+service mysql start
+service mysql stop
+service mysql status
+service mysql restart
