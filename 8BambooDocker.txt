@@ -1,0 +1,152 @@
+Atlassian Bamboo is a ci/cd tool, default port 8085  
+Jenkins is a ci/cd tool which is free
+
+
+##############This Example not working##########################
+please check this url :-https://www.hackerxone.com/2022/02/11/steps-to-install-configure-bamboo-on-ubuntu-20-04-lts/
+
+
+1)docker run -itd -p 8085:8085 --name uc1_bamboo ubuntu:latest
+2)docker exec -it uc1_bamboo /bin/bash
+3)apt update -y
+4)apt list --upgradable
+5)apt upgrade -y
+6)apt install wget vim -y
+
+https://www.interserver.net/tips/kb/how-to-install-bamboo-in-ubuntu/
+
+
+6)java -version
+7)apt-get install software-properties-common
+8)add-apt-repository ppa:openjdk-r/ppa
+9)apt-get update
+10)apt-get install openjdk-8-jdk
+
+#################### mysql install start ######################################
+1)apt-get install mysql-server -y
+
+2)service mysql status
+service mysql start 
+
+3)mysql
+
+4)CREATE DATABASE jira CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+  show databases;
+
+  CREATE USER 'golu'@'%' IDENTIFIED BY 'golu@123';
+  or
+  CREATE USER 'golu'@'localhost' IDENTIFIED BY 'golu@123';
+
+5)GRANT ALL PRIVILEGES ON *.* TO 'golu'@'%' WITH GRANT OPTION;
+GRANT ALL ON golu.* TO 'golu'@'localhost' WITH GRANT OPTION;  
+
+
+6)FLUSH PRIVILEGES;
+
+7)EXIT;
+service mysql restart; 
+
+#################### mysql install ends ######################################
+11)cd /opt
+12)wget https://www.atlassian.com/software/bamboo/downloads/binary/atlassian-bamboo-9.3.2.tar.gz
+chmod 777 ./atlassian-bamboo-9.3.2.tar.gz
+13)tar -xvf atlassian-bamboo-9.3.2.tar.gz
+rm -f atlassian-bamboo-9.3.2.tar.gz
+14)mv atlassian-bamboo-9.3.2 bamboo
+15)cd /opt/bamboo
+16)ls -l
+17)vim /opt/bamboo/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties
+un commment the line
+18)bamboo.home=/home/bamboo/bamboo-home
+
+19)mkdir -p /home/bamboo/bamboo-home
+
+20)useradd -s /bin/bash bamboo
+21)chown bamboo: /opt/bamboo/atlassian-bamboo
+22)vim /etc/systemd/system/bamboo.service
+
+
+------------------- put code in vim -----------------------------
+[Unit]
+
+Description = Atlassian Bamboo
+
+After = syslog.target network.target
+
+[Service]
+
+Type = forking
+
+User = bamboo
+
+ExecStart = /opt/bamboo/atlassian-bamboo/bin/start-bamboo.sh
+
+ExecStop = /opt/bamboo/atlassian-bamboo/bin/stop-bamboo.sh
+
+SuccessExitStatus = 143
+
+[Install]
+
+WantedBy = multi-user.target
+-----------------------------------------------------------------
+23)systemctl enable bamboo.service
+24)if [ -f /etc/systemd/system/*.wants/bamboo.service ]; then echo "On"; else echo "Off"; fi
+25)vim /etc/init.d/bamboo
+
+----------------------------paste code in vim ---------------------
+#!/bin/sh
+
+set -e
+#### VARIABLES ####
+# Name of app ( bamboo, Confluence, etc )
+APP=bamboo
+
+# Name of the user to run as
+USER=bamboo
+
+# Location of application's bin directory
+BASE=/opt/bamboo
+case "$1" in
+    # Start command
+    start)
+        echo "Starting $APP"
+        /bin/su - $USER -c "export BAMBOO_HOME=${BAMBOO_HOME}; $BASE/bin/startup.sh &> /dev/null"
+        ;;
+    
+    # Stop command
+    stop)
+       echo "Stopping $APP"
+       /bin/su - $USER -c "$BASE/bin/shutdown.sh &> /dev/null"
+       echo "$APP stopped successfully"
+       ;;
+
+    # Restart command
+    restart)
+        $0 stop
+        sleep 5
+        $0 start
+        ;;
+
+    *)
+        echo "Usage: /etc/init.d/$APP {start|restart|stop}"
+        exit 1
+        ;;
+esac
+exit 0
+-------------------------------------------
+
+26)chmod 755 /etc/init.d/bamboo
+
+27)sudo update-rc.d bamboo defaults
+
+-------------------------- Reverse engineering------------------------------
+
+
+
+-------------------------Reverse Engineering stop----------------------------
+
+28)$ sudo service bamboo start
+$ sudo service bamboo stop
+$ sudo service bamboo restart
+
+29)

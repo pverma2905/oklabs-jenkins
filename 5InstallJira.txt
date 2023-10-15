@@ -1,3 +1,9 @@
+
+Jira-> it is a team tracking tool default port=8080
+
+
+
+
 1)docker run -it -d -p 1010:8080 --name uc1 ubuntu:latest 
 2)docker exec -it uc1 /bin/bash
 3)apt-get update -y
@@ -72,4 +78,48 @@ ls -al
 16)docker run -it -d -p 7070:8080 --name uclatest2 pranavv481/image_jira 
 17)docker exec -it uclatest2 /bin/bash
 
-17)/etc/init.d/jira start
+18)/etc/init.d/jira start
+
+
+################### For Apache webserver ############################
+
+sudo apt update
+sudo apt update apache2
+sudo a2enmod proxy
+sudo a2enmod proxy_http
+sudo systemctl restart apache2
+
+sudo vim /etc/apache2/sites-available/anil-jira.dollarinfotech.com.conf
+
+paste the content
+<virtualHost *:80>
+  ServerName anil-jira.dollarinfotech.com
+
+  ProxyPreserveHost On
+  ProxyPass / http://38.242.236.173:8080/
+  ProxyPassReserve / http://38.242.236.173:8080/
+</virtualHost>
+
+sudo a2ensite anil-jira.dollarinfotech.com.conf
+systemctl reload apache2
+sudo apache2ctl configtest
+sudo systemctl restart apache2
+
+
+############# ssl ##################
+sudo apt-update
+sudo apt install certbot python3-certbot-apache
+sudo certbot --apache -d anil-jira.dollarinfotech.com 
+
+sudo vim anil-jira.dollarinfotech.com.conf
+
+<virtualHost *:80>
+  ServerName anil-jira.dollarinfotech.com
+
+ Redirect permanent / https://anil-jira.dollarinfotech.com/
+</virtualHost>
+
+sudo apache2ctl configtest
+sudo systemctl restart apache2
+
+

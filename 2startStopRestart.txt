@@ -7,3 +7,6 @@ service mysql start
 service mysql stop
 service mysql status
 service mysql restart
+
+service postgresql start
+service postgresql status

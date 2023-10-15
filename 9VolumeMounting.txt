@@ -1,0 +1,3 @@
+docker build -t next1_image .
+
+docker run -itd -p 3000:3000 --name nextjs_cont3 -v .:/home/next1 next1_image:t1

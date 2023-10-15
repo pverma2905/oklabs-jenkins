@@ -1,0 +1,113 @@
+confluence:- it is a product documentation tools default port-8090
+
+https://www.heyvaldemar.com/install-confluence-on-ubuntu-server/
+
+
+################# create docker #########################
+1)docker run -it -d -p 3030:8090 --name uc1_confuence ubuntu:latest
+2)docker exec uc1_confuence /bin/bash 
+
+################ install confuenece ######################
+1)apt update -y
+apt list --upgradable
+apt upgrade -y
+
+
+2)apt install -y wget vim postgresql apache2 apt-transport-https certbot python3-certbot-apache fontconfig
+6
+44
+
+15)su - postgres
+whoami
+16)psql
+service postgresql status
+service postgresql start
+service postgresql status
+psql
+17)CREATE USER conf_pranav WITH PASSWORD 'conf@123';
+18)CREATE DATABASE "conf_pranav_db" WITH OWNER "conf_pranav";
+OR
+CREATE DATABASE "conf_pranav_db" WITH OWNER "conf_pranav" ENCODING 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8' TEMPLATE template0 CONNECTION LIMIT = -1;
+19)\q
+20)exit
+
+############### check version################
+atlasian confluence change log
+
+
+21)wget https://www.atlassian.com/software/confluence/downloads/binary/atlassian-confluence-8.5.0-x64.bin
+22) chmod 777 atlassian-confluence-8.5.0-x64.bin
+23) ./atlassian-confluence-8.5.0-x64.bin
+o
+1
+i
+n
+
+----------------------------Reverse crack enginer---------------------
+
+cd /opt
+
+mkdir atlassian-agent
+
+cd atlassian-agent
+
+docker container cp atlassian-agent.jar url_confluence:/opt/atlassian-agent
+chmod 777 atlasian-agent.jar
+vim /opt/atlassian/confluence/bin/setenv.sh
+export JAVA_OPTS="$JAVA_OPTS -javaagent:/opt/atlassian-agent/atlassian-agent.jar"
+
+java --version
+
+#################install java ############################
+https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-on-ubuntu-22-04
+
+0)apt-update
+1)apt install default-jre -y
+java -version
+sudo /etc/init.d/confluence start
+cd /opt/atlasian-agent
+java -jar atlassian-agent.jar -m pranavv481@gmail.com.com -o pranav -p conf -s BH2O-KFAX-3O68-YQVZ
+
+
+
+--------------------------------------------------------------------------------------
+
+/etc/init.d/confluence stop
+/etc/init.d/confluence start
+
+docker stop uc1_confluence
+docker start uc1_confluence
+
+docker exec -it uc1_confluence /bin/bash 
+/etc/init.d/confluence start
+service postgresql start
+
+
+
+
+
+
+
+
+
+
+
+
+
+24) vim /opt/atlassian/confluence/conf/server.xml
+25) /etc/init.d/confluence start
+26) less /opt/atlassian/confluence/logs/catalina.out
+
+
+3) a2enmod proxy_http
+4) a2enmod rewrite
+5) vim /etc/apache2/sites-available/confluence.heyvaldemar.net.conf
+6) vim /etc/apache2/sites-available/confluence.heyvaldemar.net-ssl.conf
+7) a2ensite confluence.heyvaldemar.net.conf
+8) a2ensite confluence.heyvaldemar.net-ssl.conf
+9) a2dissite 000-default.conf
+10) apache2ctl configtest
+11) systemctl restart apache2
+12) systemctl status apache2
+13) certbot --apache -d confluence.heyvaldemar.net
+14) certbot renew --dry-run
