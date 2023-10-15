@@ -1,1 +1,43 @@
 Reverse proxy can be used when u have multiple application running on same server on different ports
+
+#################for reverse proxy start########################
+1)sudo apt update
+2)sudo apt install apache2
+3)sudo a2enmod proxy
+4)sudo a2enmod proxy_http
+5)sudo systemctl restart apache2
+sudo nano /etc/apache2/sites-available/frontend.dollorinfotech.com.conf
+<VirtualHost *:80> 
+    ServerName frontend.dollorinfotech.com
+    ProxyPreserveHost On
+    ProxyPass / http://38.242.236.173:8080/
+    ProxyPassReverse / http://38.242.236.173:8080/
+</VirtualHost> 
+
+sudo a2ensite frontend.dollorinfotech.com.conf
+sudo apache2ctl configtest
+sudo systemctl restart apache2
+
+#################for reverse proxy ends########################
+
+
+################## ssl certificate start#####################
+1)sudo apt-update
+2)sudo apt install certbot python3-certbot-apache
+2)sudo certbot --apache -d anil-jira.dollarinfotech.com 
+
+3)sudo vim anil-jira.dollarinfotech.com.conf
+
+<virtualHost *:80>
+  ServerName anil-jira.dollarinfotech.com
+
+ Redirect permanent / https://anil-jira.dollarinfotech.com/
+</virtualHost>
+
+4)sudo apache2ctl configtest
+5)sudo systemctl restart apache2
+
+################## ssl certificate ends#####################
+
+
+

@@ -1,0 +1,57 @@
+jenkins:-automate the deployment process
+
+1)docker run -itd -p 9090:8080 oklabs/jenkins_cont2
+
+get PASSWORD:-
+docker logs container_name
+
+
+ping dollarinfotech.com 
+pranav_jenkins ----- A ---------- 38.242.236.173  - save
+check again
+commit changes
+http://pranav_jenkins.dollarinfotech.com 
+
+#################for reverse proxy start########################
+1)sudo apt update
+2)sudo apt install apache2
+3)sudo a2enmod proxy
+4)sudo a2enmod proxy_http
+5)sudo systemctl restart apache2
+sudo nano /etc/apache2/sites-available/pranav_jenkins.dollarinfotech.com.conf
+<VirtualHost *:80> 
+    ServerName pranav_jenkins.dollarinfotech.com
+    ProxyPreserveHost On
+    ProxyPass / http://38.242.236.173:8080/
+    ProxyPassReverse / http://38.242.236.173:8080/
+</VirtualHost> 
+
+sudo a2ensite pranav_jenkins.dollarinfotech.com.conf
+sudo apache2ctl configtest
+sudo systemctl restart apache2
+
+#################for reverse proxy ends########################
+
+################## ssl certificate start#####################
+1)sudo apt-update
+2)sudo apt install certbot python3-certbot-apache
+2)sudo certbot --apache -d pranav_jenkins.dollarinfotech.com -m pverma2905@gmail.com
+
+3)sudo vim pranav_jenkins.dollarinfotech.com.conf
+
+<virtualHost *:80>
+  ServerName pranav_jenkins.dollarinfotech.com
+
+ Redirect permanent / https://pranav_jenkins.dollarinfotech.com/
+</virtualHost>
+
+4)sudo apache2ctl configtest
+5)sudo systemctl restart apache2
+
+################## ssl certificate ends#####################
+
+
+docker run -p 8080:8080 -p 50000:50000 -d jenkins/jenkins:lts
+
+
+
